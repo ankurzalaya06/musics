@@ -46,7 +46,7 @@ To get started with Music, you will need the following prerequisites:
 2. Build the Docker containers using the following command:
 
    ```bash
-   docker-compose.yml build
+   sudo docker-compose  up --build -d
    ```
 
 ## Usage

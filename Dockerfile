@@ -11,7 +11,7 @@ RUN mkdir /music_service
 WORKDIR /music_service
 
 # Copy all project files to the Docker image
-ADD . /music_service/
+COPY . /music_service/
 
 # Install dependencies
 RUN pip install -r requirements.txt
@@ -19,8 +19,5 @@ RUN pip install -r requirements.txt
 # Expose the application port
 EXPOSE 8000
 
-# Make migrations
-CMD ["python", "manage.py", "makemigrations"]
-
-# Migrate the database
-CMD ["python", "manage.py", "migrate"]
+# CMD has to be a single instruction, so combine the commands
+CMD ["sh", "-c", "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
