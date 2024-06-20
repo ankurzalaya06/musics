@@ -16,4 +16,11 @@ ADD . /music_service/
 # Install dependencies
 RUN pip install -r requirements.txt
 
+# Expose the application port
+EXPOSE 8000
 
+# Make migrations
+CMD ["python", "manage.py", "makemigrations"]
+
+# Migrate the database
+CMD ["python", "manage.py", "migrate"]

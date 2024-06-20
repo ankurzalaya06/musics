@@ -41,31 +41,31 @@ $(document).ready(function () {
     fetchPlaylists();
 
 
-// Edit functionality for opening popup
-$(document).on('click', '.edit-btn', function () {
-    var playlistId = $(this).data('id');
+    // Edit functionality for opening popup
+    $(document).on('click', '.edit-btn', function () {
+        var playlistId = $(this).data('id');
 
-    // Fetch playlist details via AJAX
-    $.ajax({
-        url: '/api/playlists/' + playlistId + '/',  // Replace with your actual server endpoint URL
-        type: 'GET',
-        success: function (playlist) {
-            // Populate modal fields with playlist data
-            $('#editPlaylistId').val(playlist.id);
-            $('#editPlaylistNameInput').val(playlist.name);
+        // Fetch playlist details via AJAX
+        $.ajax({
+            url: '/api/playlists/' + playlistId + '/',  // Replace with your actual server endpoint URL
+            type: 'GET',
+            success: function (playlist) {
+                // Populate modal fields with playlist data
+                $('#editPlaylistId').val(playlist.id);
+                $('#editPlaylistNameInput').val(playlist.name);
 
-            // Fetch tracks data and populate the edit modal
-            $.ajax({
-                url: '/api/tracks/',  // Replace with your actual server endpoint URL for tracks
-                type: "GET",
-                dataType: "json",
-                success: function (tracks) {
-                    var editTrackOrderList = $('#editTrackOrderList');
-                    editTrackOrderList.empty();
+                // Fetch tracks data and populate the edit modal
+                $.ajax({
+                    url: '/api/tracks/',  // Replace with your actual server endpoint URL for tracks
+                    type: "GET",
+                    dataType: "json",
+                    success: function (tracks) {
+                        var editTrackOrderList = $('#editTrackOrderList');
+                        editTrackOrderList.empty();
 
-                    // Process each trackInfo from playlist.tracks
-                    playlist.tracks.forEach(trackInfo => {
-                        var trackOrderItem = `
+                        // Process each trackInfo from playlist.tracks
+                        playlist.tracks.forEach(trackInfo => {
+                            var trackOrderItem = `
                             <div class="trackOrderItem">
                                 <div class="form-group">
                                     <label for="editTrackSelect">Track</label>
@@ -81,23 +81,23 @@ $(document).on('click', '.edit-btn', function () {
                                 </div>
                             </div>
                         `;
-                        editTrackOrderList.append(trackOrderItem);
-                    });
-                    fetchPlaylists(); 
-                },
-                error: function (xhr, status, error) {
-                    console.error("Error fetching tracks:", error);
-                }
-            });
+                            editTrackOrderList.append(trackOrderItem);
+                        });
+                        fetchPlaylists();
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error fetching tracks:", error);
+                    }
+                });
 
-            // Open the edit playlist modal
-            $('#editPlaylistModal').modal('show');
-        },
-        error: function (xhr, status, error) {
-            console.error('Error fetching playlist details:', error);
-        }
+                // Open the edit playlist modal
+                $('#editPlaylistModal').modal('show');
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching playlist details:', error);
+            }
+        });
     });
-});
 
 
     // Save changes to playlist in edit
@@ -162,7 +162,7 @@ $(document).on('click', '.edit-btn', function () {
                 </div>
             `;
             $('#editTrackOrderList').append(newTrackOrderItem);
-    
+
             // Fetch tracks and populate the select element
             $.ajax({
                 url: '/api/tracks/',  // Replace with your actual server endpoint URL for tracks
@@ -180,9 +180,9 @@ $(document).on('click', '.edit-btn', function () {
                 }
             });
         });
-    
+
         // Other existing JavaScript code goes here...
-    
+
     });
 
     // Delete functionality
