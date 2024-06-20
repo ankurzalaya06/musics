@@ -12,7 +12,7 @@ router.register(r'playlists', PlaylistViewSet)
 
 
 urlpatterns = [
-    path('', views.mainpaige, name='mainpage'),
+    path('', views.mainpage, name='mainpage'),
     path('api/', include(router.urls)),
    
 ]

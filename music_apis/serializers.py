@@ -3,37 +3,58 @@ from .models import Artist, Album, Track, Playlist, PlaylistTrack
 from django.db.models import F
 
 
-
 class ArtistSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the Artist model.
+    """
     class Meta:
         model = Artist
         fields = '__all__'
 
+
 class AlbumSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the Album model.
+    """
     class Meta:
         model = Album
         fields = '__all__'
 
+
 class TrackSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the Track model.
+    """
     class Meta:
         model = Track
         fields = '__all__'
 
+
 class PlaylistTrackSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the PlaylistTrack model, with added 'track_name' field.
+    """
     track_name = serializers.CharField(source="track.name", read_only=True)
 
     class Meta:
         model = PlaylistTrack
         fields = ['track', 'order', 'track_name']
 
+
 class PlaylistSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the Playlist model, including nested serialization of PlaylistTracks.
+    """
     tracks = PlaylistTrackSerializer(source='playlist_tracks', many=True)
 
     class Meta:
         model = Playlist
-        fields = ['id','uuid', 'name', 'tracks' ]
+        fields = ['id', 'uuid', 'name', 'tracks']
 
     def create(self, validated_data):
+        """
+        Create method to handle creation of a new Playlist instance with associated PlaylistTracks.
+        """
         tracks_data = validated_data.pop('playlist_tracks')
         playlist_name = validated_data.get('name')
         
@@ -55,11 +76,10 @@ class PlaylistSerializer(serializers.ModelSerializer):
         
         return playlist
 
-
-
-
     def update(self, instance, validated_data):
-        breakpoint()
+        """
+        Update method to handle updating an existing Playlist instance and its associated PlaylistTracks.
+        """
         tracks_data = validated_data.pop('playlist_tracks', None)
         instance.name = validated_data.get('name', instance.name)
         instance.save()
@@ -92,4 +112,7 @@ class PlaylistSerializer(serializers.ModelSerializer):
         return instance
     
     def delete(self, instance):
+        """
+        Delete method to handle deletion of a Playlist instance.
+        """
         instance.delete()
